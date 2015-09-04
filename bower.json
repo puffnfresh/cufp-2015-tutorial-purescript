@@ -1,0 +1,16 @@
+{
+  "name": "cufp-2015-tutorial-purescript",
+  "version": "1.0.0",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-halogen": "master"
+  }
+}
