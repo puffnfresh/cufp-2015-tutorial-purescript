@@ -12,13 +12,15 @@ import qualified Halogen.HTML.Events as E
 data Input a = Click a
 
 render :: forall p. Render Int Input p
-render _ = H.div_ [ H.text "Hello world"
+render n = H.div_ [ H.p_ [ H.text $ "Score: " ++ show n ]
                   , H.button [ E.onClick $ E.input_ Click ]
                              [ H.text "Click me!" ]
                   ]
 
 eval :: forall f. Eval Input Int Input f
-eval (Click a) = pure a
+eval (Click a) = do
+  modify (+ 1)
+  pure a
 
 ui :: forall f p. Component Int Input f p
 ui = component render eval
