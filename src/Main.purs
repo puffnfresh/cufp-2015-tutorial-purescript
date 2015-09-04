@@ -1,18 +1,29 @@
 module Main where
 
-import Control.Monad.Eff
-import Control.Monad.Eff.Exception hiding (error)
-import Node.FS
-import Control.Monad.Eff.Console
-
 import Prelude
-import Node.Encoding
-import Node.FS.Sync
+import qualified Control.Monad.Aff as A
+import Control.Monad.Aff.Console
 
-type MainEffects r = (err :: EXCEPTION, fs :: FS, console :: CONSOLE | r)
+import Halogen
+import Halogen.Util
+import qualified Halogen.HTML as H
+import qualified Halogen.HTML.Events as E
 
-main :: Eff (MainEffects ()) Unit
-main = do
-  log "Hello sailor!"
-  content <- readTextFile UTF8 "bower.json"
-  log content
+data Input a = Click a
+
+render :: forall p. Render Int Input p
+render _ = H.div_ [ H.text "Hello world"
+                  , H.button [ E.onClick $ E.input_ Click ]
+                             [ H.text "Click me!" ]
+                  ]
+
+eval :: forall f. Eval Input Int Input f
+eval (Click a) = pure a
+
+ui :: forall f p. Component Int Input f p
+ui = component render eval
+
+main = A.launchAff do
+  app <- runUI ui 0
+  appendToBody app.node
+  log "Hello world"
