@@ -57,6 +57,8 @@ eval (Click a) = do
   pure a
 eval (Timer a) = do
   modify timer
+  g <- get
+  liftFI $ updateProgress' g.score g.high
   pure a
 eval (GetScore f) = do
   n <- gets _.score
